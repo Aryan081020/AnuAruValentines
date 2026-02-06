@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Will You Be My Valentine?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      font-family: "Poppins", sans-serif;
+    }
+
+    .card {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      max-width: 360px;
+      z-index: 2;
+    }
+
+    h1 {
+      color: #ff4d6d;
+    }
+
+    p {
+      color: #555;
+      line-height: 1.6;
+    }
+
+    img {
+      width: 100%;
+      border-radius: 15px;
+      margin-bottom: 1.5rem;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    button {
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+    }
+
+    #yesBtn {
+      background: #ff4d6d;
+      color: white;
+    }
+
+    #noBtn {
+      background: #e0e0e0;
+      position: relative;
+    }
+
+    /* Floating hearts */
+    .heart {
+      position: absolute;
+      bottom: -20px;
+      width: 20px;
+      height: 20px;
+      background: #ff4d6d;
+      transform: rotate(45deg);
+      animation: floatUp 6s linear infinite;
+      opacity: 0.7;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      width: 20px;
+      height: 20px;
+      background: #ff4d6d;
+      border-radius: 50%;
+      position: absolute;
+    }
+
+    .heart::before { top: -10px; left: 0; }
+    .heart::after { left: -10px; top: 0; }
+
+    @keyframes floatUp {
+      to {
+        transform: translateY(-120vh) rotate(45deg);
+        opacity: 0;
+      }
+    }
+
+    /* Confetti */
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      animation: fall 3s linear forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Love letter page */
+    .letter {
+      background: white;
+      max-width: 700px;
+      padding: 3rem;
+      border-radius: 25px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      animation: fadeIn 1.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card" id="mainCard">
+    <img src="photo.jpg" alt="Us together">
+
+    <h1>💖 Will you be my Valentine, Anushka? 💖</h1>
+
+    <p>
+      From the moment you came into my life, everything felt warmer,
+      happier, and more beautiful.
+    </p>
+
+    <div class="buttons">
+      <button id="yesBtn">Yes 💕</button>
+      <button id="noBtn">No 😢</button>
+    </div>
+  </div>
+
+  <script>
+    const herName = "Anushka";
+
+    // Floating hearts
+    function createHeart(x = null) {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.style.left = x !== null ? x + "px" : Math.random() * window.innerWidth + "px";
+      heart.style.animationDuration = 4 + Math.random() * 3 + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 7000);
+    }
+
+    setInterval(createHeart, 300);
+
+    // Hearts spelling her name
+    function spellName() {
+      const startX = window.innerWidth / 2 - herName.length * 30;
+      const yOffset = window.innerHeight / 2 + 120;
+
+      [...herName].forEach((_, i) => {
+        for (let j = 0; j < 10; j++) {
+          setTimeout(() => {
+            createHeart(startX + i * 60 + Math.random() * 15);
+          }, i * 300 + j * 60);
+        }
+      });
+    }
+
+    // Confetti
+    function launchConfetti() {
+      for (let i = 0; i < 180; i++) {
+        const c = document.createElement("div");
+        c.classList.add("confetti");
+        c.style.left = Math.random() * 100 + "vw";
+        c.style.backgroundColor =
+          ["#ff4d6d", "#ffd166", "#ff8fab", "#cdb4db"][Math.floor(Math.random() * 4)];
+        c.style.animationDuration = 2 + Math.random() * 2 + "s";
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 4000);
+      }
+    }
+
+    // Buttons
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+
+    noBtn.addEventListener("mouseover", () => {
+      noBtn.style.transform =
+        `translate(${Math.random()*200-100}px, ${Math.random()*200-100}px)`;
+    });
+
+    yesBtn.addEventListener("click", () => {
+      launchConfetti();
+      spellName();
+
+      document.body.innerHTML = `
+        <div class="letter">
+          <h1>💌 My Love Letter to Anushka 💌</h1>
+
+          <p>
+            I don’t think you realize how deeply you’ve changed my life.
+            You’ve become my safe place, my happiest thought, and the
+            person I want to share every little moment with.
+          </p>
+
+          <p>
+            Loving you feels natural, comforting, and exciting all at once.
+            I choose you today, tomorrow, and always.
+          </p>
+
+          <p>Happy Valentine’s Day, my love ❤️</p>
+        </div>
+      `;
+    });
+  </script>
+
+</body>
+</html>
